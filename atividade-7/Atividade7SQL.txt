@@ -1,0 +1,34 @@
+SELECT *
+from Funcionarios
+order by salario desc, idade asc
+limit 3
+
+select nome, M.nroa, andar
+from Medicos M, Ambulatorios A
+WHERE M.nroa = A.nroa 
+order by M.nroa
+
+SELECT andar, sum(capacidade)
+FROM Ambulatorios
+GROUP by andar
+
+select andar
+FROM Ambulatorios
+group by andar
+having avg(capacidade) >= 40
+
+SELECT M.nome
+FROM Medicos M, Consultas C
+WHERE C.codm = M.codm
+group by M.nome
+having count(M.codm) > 1
+
+delete from Ambulatorios
+WHERE nroa not in (SELECT Medicos.nroa FROM Medicos where Medicos.nroa is NULL)
+
+update Medicos
+set cidade = (SELECT cidade from 
+              Pacientes WHERE nome = 'Paulo'),
+    idade = 2 * (SELECT idade from Pacientes WHERE nome = 'Ana');
+
+
