@@ -1,0 +1,55 @@
+SELECT nome
+FROM Pacientes
+WHERE codp in 
+(SELECT codp
+ from Consultas
+ where hora > 14)
+
+SELECT nome, idade
+FROM Medicos
+WHERE codm IN
+(SELECT codm
+ FROM Consultas
+ WHERE codp in
+ (SELECT codp
+  FROM Pacientes
+  WHERE nome = 'Ana')
+)
+
+SELECT nroa, andar
+FROM Ambulatorios
+WHERE nroa not IN
+(SELECT nroa
+ FROM Medicos
+ WHERE nroa is not NULL)
+
+SELECT cpf
+from Medicos
+where nroa = SOME
+(SELECT nroa
+ FROM Ambulatorios
+ where andar = 1)
+
+SELECT nome, cpf
+FROM Funcionarios
+WHERE salario < ALL (
+  SELECT salario
+  FROM Funcionarios
+);
+
+SELECT p.nome
+FROM Pacientes p
+JOIN Consultas c ON p.codp = c.codp
+WHERE c.hora < ALL (
+    SELECT c2.hora
+    FROM Consultas c2
+    WHERE c2.data = '2020-10-14'
+);
+
+SELECT nroa, andar
+FROM Ambulatorios
+WHERE capacidade > ALL (
+    SELECT capacidade
+    FROM Ambulatorios
+    WHERE andar = 1
+);

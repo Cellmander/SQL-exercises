@@ -1,0 +1,80 @@
+SELECT m.nome, m.CPF
+FROM Medicos AS m
+WHERE EXISTS (
+  SELECT 1
+  FROM Pacientes AS p
+  WHERE p.CPF = m.CPF
+);
+
+SELECT DISTINCT m.nome, m.CPF, c.data
+FROM Medicos AS m
+JOIN Consultas AS c
+  ON c.codm = m.codm
+WHERE m.especialidade = 'ortopedia'
+  AND EXISTS (
+    SELECT 1
+    FROM Consultas AS ca
+    JOIN Pacientes AS pa ON pa.codp = ca.codp
+    WHERE ca.codm = m.codm
+      AND pa.nome = 'Ana'
+  );
+
+SELECT m.nome, m.CPF
+FROM Medicos AS m
+WHERE NOT EXISTS (
+  SELECT 1
+  FROM Pacientes AS p
+  WHERE NOT EXISTS (
+    SELECT 1
+    FROM Consultas AS c
+    WHERE c.codm = m.codm
+      AND c.codp = p.codp
+  )
+);
+
+SELECT m.nome, m.CPF
+FROM Medicos AS m
+WHERE m.especialidade = 'ortopedia'
+  AND NOT EXISTS (
+    SELECT 1
+    FROM Pacientes AS p
+    WHERE p.cidade = 'Florianópolis'
+      AND NOT EXISTS (
+        SELECT 1
+        FROM Consultas AS c
+        WHERE c.codm = m.codm
+          AND c.codp = p.codp
+      )
+  );
+
+SELECT q.data, q.hora
+FROM (
+  SELECT c.data, c.hora, c.codm
+  FROM Consultas AS c
+) AS q
+JOIN (
+  SELECT codm
+  FROM Medicos
+  WHERE nome = 'Maria'
+) AS m ON m.codm = q.codm;
+
+SELECT DISTINCT p.nome, p.cidade
+FROM Pacientes AS p
+JOIN (
+  SELECT DISTINCT c.codp
+  FROM Consultas AS c
+  JOIN (
+    SELECT codm
+    FROM Medicos
+    WHERE especialidade = 'ortopedia'
+  ) AS mo ON mo.codm = c.codm
+) AS cp ON cp.codp = p.codp;
+
+SELECT m.nome, m.CPF
+FROM Medicos AS m
+JOIN (
+  SELECT codm, nroa
+  FROM Medicos
+  WHERE nome = 'Pedro'
+) AS pedro ON m.nroa = pedro.nroa
+WHERE m.codm <> pedro.codm;

@@ -1,0 +1,37 @@
+Exercício 1:
+CREATE VIEW FuncFloripa40 (codigo, nome, CPF, idade) AS
+SELECT codf, nome, CPF, idade
+FROM Funcionarios
+WHERE cidade = 'Florianopolis' AND idade > 40
+WITH CHECK OPTION;
+
+Exercício 2
+SELECT * FROM FuncFloripa40;
+
+Exercício 3:
+INSERT INTO FuncFloripa40 (codigo, nome, CPF, idade)
+VALUES (9, 'Francisco', 33300033333, 38);
+Não funcionou, pois idade < 40
+
+Exercício 4:
+INSERT INTO FuncFloripa40 (codigo, nome, CPF, idade)
+VALUES (10, 'Rodrigo', 22200022233, 41);
+
+Exercício 5:
+SELECT * FROM FuncFloripa40;
+Rodrigo não aparece na tupla, por conta da cidade
+
+Exercício 6:
+CREATE RULE InsercaoFuncFloripa40
+AS ON INSERT TO FuncFloripa40
+DO INSTEAD
+  INSERT INTO Funcionarios (codf, nome, CPF, idade, cidade)
+  VALUES (NEW.codigo, NEW.nome, NEW.CPF, NEW.idade, 'Florianopolis');
+
+Exercício 7:
+INSERT INTO FuncFloripa40 (codigo, nome, CPF, idade)
+VALUES (11, 'Raul', 44400044433, 53);
+
+Exercício 8:
+SELECT * FROM FuncFloripa40;
+

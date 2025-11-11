@@ -1,0 +1,14 @@
+SELECT * FROM Medicos WHERE idade < 40 or especialidade <> 'traumatologia';
+SELECT nome, idade FROM Pacientes WHERE cidade <> 'Florianópolis';
+SELECT nome, idade*12 as idadeMes FROM Pacientes;
+SELECT max(hora) as ultimaHora FROM Consultas WHERE data = '2020/10/13';
+SELECT avg(idade), count(nroa) FROM Medicos;
+SELECT codf, nome, salario*0.8 FROM Funcionarios;
+SELECT nome from Funcionarios WHERE nome like '%a';
+SELECT nome, especialidade FROM Medicos WHERE nome like '_o%o';
+SELECT codp, nome FROM Pacientes WHERE idade > 25 and doenca in ('tendinite', 'fratura', 'gripe', 'sarampo');
+SELECT cpf, nome, idade FROM Medicos WHERE cidade = 'Florianopolis'
+UNION
+SELECT cpf, nome, idade FROM Pacientes WHERE cidade = 'Florianopolis'
+UNION
+SELECT cpf, nome, idade FROM Funcionarios WHERE cidade = 'Florianopolis';
